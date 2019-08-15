@@ -14,7 +14,7 @@ public without sharing class WebhookFactory {
                     Payload__c = my_hook.Payload__c,
                     Webhook_Id__c = my_hook.Id
                 ));
-                Webhook__c my_new_hook = new Webhook__c(Id=my_hook.Id, Status__c = 'PROCESSED');
+                Webhook__c my_new_hook = new Webhook__c(Id=my_hook.Id, Status__c = 'INPROGRESS');
                 webhooks_to_update.add(my_new_hook);
             }
         }
@@ -39,12 +39,19 @@ public without sharing class WebhookFactory {
         req.setEndpoint( URL );
 
         Http my_http = new Http();
-        HTTPResponse res = my_http.send(req);
+        Webhook__c my_webhook_obj = new Webhook__c();
 
-        Webhook__c my_webhook_obj = new Webhook__c(
-            Id= webhook_id,
-            StatusCode__c = res.getStatusCode()
-        );
+        try {
+            HTTPResponse res = my_http.send(req);
+            my_webhook_obj.Id = webhook_id;
+            my_webhook_obj.StatusCode__c = res.getStatusCode();
+            my_webhook_obj.Status__c = 'PROCESSED';
+            
+        } catch(Exception e) {
+            my_webhook_obj.Id= webhook_id;
+            my_webhook_obj.Status__c = 'FAILED';
+            my_webhook_obj.Message__c = e.getMessage();
+        }
 
         update my_webhook_obj;
     }
