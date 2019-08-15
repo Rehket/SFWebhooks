@@ -5,5 +5,5 @@
     <eventType>HighVolume</eventType>
     <label>Webhook Event</label>
     <pluralLabel>Webhook Events</pluralLabel>
-    <!-- <publishBehavior>PublishImmediately</publishBehavior> -->
+    <publishBehavior>PublishImmediately</publishBehavior>
 </CustomObject>
