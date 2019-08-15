@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>ASYNCHRONOUS</fullName>
+        <default>true</default>
+        <label>Asynchronous</label>
+    </customValue>
+    <customValue>
+        <fullName>SYNCHRONOUS</fullName>
+        <default>false</default>
+        <label>Synchronous</label>
+    </customValue>
+    <description>Should the webhook execute synchronously or asynchronously?</description>
+    <masterLabel>Web Hook Execution</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>
