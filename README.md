@@ -1,9 +1,8 @@
-# SFDX App
+# SF Webhooks
+Some classes to create outbound JSON webhooks. 
 
-## Dev, Build and Test
-
-## Resources
-
-## Description of Files and Directories
-
-## Issues
+## TO DO:
+- Tests...😪💢
+- Maybe improve logging. 📑
+- Permission sets❓
+- UI/LWC app to create and monitor the webhooks? 📈
