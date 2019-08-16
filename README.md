@@ -7,7 +7,6 @@ Some classes to create outbound JSON webhooks.
 - [ ] Permission sets❓
 - [ ] UI/LWC app to create and monitor the webhooks? 📈
 - [ ] Setup immediate mode/synchronous execution?❔❓
-- [ ] Setup immediate mode/synchronous execution?❔❓
 
 ## Deployment
 
