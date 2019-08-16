@@ -75,6 +75,26 @@ global without sharing class Webhook_Test {
     }
 
     @IsTest
+    static void should_raise_exception(){
+        
+        Test.startTest();
+        Webhook__c my_request = new Webhook__c(
+            URL__c = 'https://www.good_responwwwwwwse.com',
+            // Headers__c = '{"Content-Type": "application/json"}',
+            Payload__c = '{"hello": "world"}'
+        );
+
+        insert my_request;
+        Test.getEventBus().deliver();
+
+        Test.stopTest();
+        Webhook__c my_completed_request = [SELECT Id, Status__c, StatusCode__c FROM Webhook__c WHERE Id =: my_request.Id LIMIT 1];
+
+        System.assertEquals('FAILED', my_completed_request.Status__c);
+        System.assertEquals(null, my_completed_request.StatusCode__c);
+    }
+
+    @IsTest
     static void test_webhook_base_valid_check(){
 
         WebhookBase my_hook = new WebhookBase(Datetime.now().format('yyyy-MM-dd\'T\'HH:mm:ss.SSSXXX'), '21123123123');
