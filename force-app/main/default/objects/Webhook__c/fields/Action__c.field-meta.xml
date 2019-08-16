@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Action__c</fullName>
+    <description>What is the action related to the webhook notification?</description>
+    <externalId>false</externalId>
+    <inlineHelpText>What is the action related to the webhook notification?</inlineHelpText>
+    <label>Action</label>
+    <required>true</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetName>Webhook_Action</valueSetName>
+    </valueSet>
+</CustomField>

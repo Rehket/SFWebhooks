@@ -27,14 +27,23 @@ public without sharing class WebhookFactory {
 
     @future(callout=true)
     public static void make_callout_from_webhook(String URL, String headers, String payload, String webhook_id){
-        Map<String, String> header_map = (Map<String, String>)JSON.deserialize(headers, Map<String, String>.class);
         
+        
+        Webhook__c my_webhook = [SELECT Id, Payload__c, Headers__c, URL__c, CreatedDate FROM Webhook__c WHERE Id =: webhook_id LIMIT 1];
+
+        Map<String, String> header_map = (Map<String, String>)JSON.deserialize(my_webhook.Headers__c, Map<String, String>.class);
+
         HttpRequest req = new HttpRequest();
-        for( String k: header_map.keySet()){
+        for( String k: header_map.keySet() ){
             req.setHeader(k, header_map.get(k));
         }
         
-        req.setBody(payload);
+        
+        String final_payload = JSON.serialize(new WebhookBase(Datetime.valueOf(my_webhook.CreatedDate).format('yyyy-MM-dd\'T\'HH:mm:ss.SSSXXX'), webhook_id));
+
+        req.setBody(final_payload.replaceFirst('"REPLACE_TOKEN"', payload));
+
+
         req.setMethod('POST');
         req.setEndpoint( URL );
 
@@ -45,7 +54,8 @@ public without sharing class WebhookFactory {
             HTTPResponse res = my_http.send(req);
             my_webhook_obj.Id = webhook_id;
             my_webhook_obj.StatusCode__c = res.getStatusCode();
-            my_webhook_obj.Status__c = 'PROCESSED';
+            my_webhook_obj.Status__c = res.getStatusCode() < 300 ? 'PROCESSED': 'FAILED';
+
             
         } catch(Exception e) {
             my_webhook_obj.Id= webhook_id;

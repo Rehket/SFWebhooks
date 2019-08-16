@@ -11,6 +11,11 @@
         <label>PROCESSED</label>
     </customValue>
     <customValue>
+        <fullName>INPROGRESS</fullName>
+        <default>false</default>
+        <label>INPROGRESS</label>
+    </customValue>
+    <customValue>
         <fullName>FAILED</fullName>
         <default>false</default>
         <label>FAILED</label>

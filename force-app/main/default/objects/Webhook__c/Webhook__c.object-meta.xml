@@ -153,7 +153,6 @@
     <enableSearch>false</enableSearch>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
-    <externalSharingModel>Private</externalSharingModel>
     <label>Webhook</label>
     <nameField>
         <displayFormat>WH-{0000000000}</displayFormat>

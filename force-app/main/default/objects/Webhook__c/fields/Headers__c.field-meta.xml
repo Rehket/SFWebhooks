@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Headers__c</fullName>
+    <defaultValue>&#39;{&quot;Content-Type&quot;: &quot;application/json&quot;}&#39;</defaultValue>
     <description>The Request headers in JSON format.</description>
     <externalId>false</externalId>
     <inlineHelpText>The Request headers in JSON format.</inlineHelpText>
