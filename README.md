@@ -24,3 +24,22 @@ Some classes to create outbound JSON webhooks.
 
     insert foo;
     ```
+
+5. Get the result:
+    ```json
+    {
+        "webhook_id": "a023l00000kvpfUAAQ",
+        "timestampz": "2019-08-15T19:35:48.134-07:00",
+        "queued_timestampz": "2019-08-15T19:35:46.000-07:00",
+        "payload": {
+            "attributes": {
+                "type": "Account",
+                "url": "/services/data/v46.0/sobjects/Account/0011N00001E6asMQAR"
+            },
+            "Id": "0011N00001E6asMQAR",
+            "Name": "A great company"
+        },
+        "instance_url": "https://your_org_here.my.salesforce.com"
+    }
+
+    ```
