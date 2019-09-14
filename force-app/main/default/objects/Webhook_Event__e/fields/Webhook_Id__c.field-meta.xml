@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Webhook_Id__c</fullName>
-    <description>The SalesForce Id of the Webhook__c object,</description>
+    <description>The SalesForce Id of the Webhook__c object.</description>
     <externalId>false</externalId>
     <isFilteringDisabled>false</isFilteringDisabled>
     <isNameField>false</isNameField>

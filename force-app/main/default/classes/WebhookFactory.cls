@@ -9,9 +9,6 @@ public without sharing class WebhookFactory {
             if (my_hook.Execution_Order__c == 'IMMEDIATE' && (my_hook.Status__c == 'NEW' || my_hook.Status__c == 'RESUBMIT')) {
                 
                 events_to_publish.add(new Webhook_Event__e(
-                    URL__c = my_hook.URL__c,
-                    Headers__c = my_hook.Headers__c,
-                    Payload__c = my_hook.Payload__c,
                     Webhook_Id__c = my_hook.Id
                 ));
                 Webhook__c my_new_hook = new Webhook__c(Id=my_hook.Id, Status__c = 'INPROGRESS');
