@@ -2,13 +2,25 @@
 <GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
     <customValue>
         <fullName>IMMEDIATE</fullName>
-        <default>false</default>
+        <default>true</default>
         <label>Immediate</label>
     </customValue>
     <customValue>
         <fullName>DELAYED</fullName>
         <default>false</default>
         <label>Delayed</label>
+    </customValue>
+    <customValue>
+        <fullName>ASYNCHRONOUS</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>ASYNCHRONOUS</label>
+    </customValue>
+    <customValue>
+        <fullName>SYNCHRONOUS</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>SYNCHRONOUS</label>
     </customValue>
     <description>Should the webhook execute immediatly or be delayed?</description>
     <masterLabel>Web Hook Execution</masterLabel>
