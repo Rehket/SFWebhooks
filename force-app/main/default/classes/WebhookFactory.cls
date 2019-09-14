@@ -40,14 +40,8 @@ public without sharing class WebhookFactory {
         if (String.isBlank(my_webhook.Object_Payload_Id__c)){
             req.setBody(final_payload.replace('"REPLACE_TOKEN"', my_webhook.Payload__c));
         } else {
-            String query_string = '';
-            Schema.SObjectType token = Id.valueOf(my_webhook.Object_Payload_Id__c).getSObjectType();
-            Schema.DescribeSObjectResult dr = token.getDescribe();
-            for (String field: dr.fields.getMap().keySet())
-                query_string += field + ', ';
-            query_string = query_string.removeEnd(', ');
-            SObject payload = Database.query('SELECT ' + query_string + ' FROM ' + dr.getName() + ' LIMIT 1');
-            req.setBody(final_payload.replace('"REPLACE_TOKEN"', JSON.serialize(payload)));
+            
+            req.setBody(final_payload.replace('"REPLACE_TOKEN"', build_json_object_payload(my_webhook.Object_Payload_Id__c)));
         }
             
         req.setMethod('POST');
@@ -70,6 +64,30 @@ public without sharing class WebhookFactory {
         }
 
         update my_webhook_obj;
+    }
+
+
+    // Need to write test
+    static String build_json_object_payload(String object_id){
+
+        String query_string = '';
+        Schema.SObjectType token = Id.valueOf(object_id).getSObjectType();
+        Schema.DescribeSObjectResult dr = token.getDescribe();
+        Map<String, Schema.SObjectField> field_map = dr.fields.getMap();
+        for (String field: field_map.keySet())
+            query_string += field + ', ';
+        query_string = query_string.removeEnd(', ');
+        System.debug(query_string);
+
+        // Gotta do this to get the fields dropped for null values.
+        SObject payload = Database.query('SELECT ' + query_string + ' FROM ' + dr.getName() + ' LIMIT 1');
+        for (String field: field_map.keySet()){
+            if(field_map.get(field).getDescribe().isUpdateable())
+                payload.put( field, (payload.isSet(field)  ? payload.get(field): null) );
+        }
+        
+        return JSON.serialize(payload);
+
     }
 
 }
