@@ -19,7 +19,7 @@ public with sharing class WebhookBase {
     public Boolean isValid(){
         String json_payload = JSON.serialize(this);
         // Events can't be larger than 1mb, or about 1048576 characters, and text field cant be more than 131072 characters.
-        if (json_payload.length() > 131072) 
+        if (json_payload.length() > 131072)  
             return false; 
         return true;
     }

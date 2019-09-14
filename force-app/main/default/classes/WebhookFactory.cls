@@ -6,7 +6,7 @@ public without sharing class WebhookFactory {
 
         for(Id webhook_id: my_webhook_map.keySet()){
             Webhook__c my_hook = my_webhook_map.get(webhook_id);
-            if (my_hook.Execution_Order__c == 'ASYNCHRONOUS' && (my_hook.Status__c == 'NEW' || my_hook.Status__c == 'RESUBMIT')) {
+            if (my_hook.Execution_Order__c == 'IMMEDIATE' && (my_hook.Status__c == 'NEW' || my_hook.Status__c == 'RESUBMIT')) {
                 
                 events_to_publish.add(new Webhook_Event__e(
                     URL__c = my_hook.URL__c,
@@ -26,10 +26,10 @@ public without sharing class WebhookFactory {
     }
 
     @future(callout=true)
-    public static void make_callout_from_webhook(String URL, String headers, String payload, String webhook_id){
+    public static void make_callout_from_webhook(String webhook_id){
         
         
-        Webhook__c my_webhook = [SELECT Id, Payload__c, Headers__c, URL__c, CreatedDate FROM Webhook__c WHERE Id =: webhook_id LIMIT 1];
+        Webhook__c my_webhook = [SELECT Id, Payload__c, Object_Payload_Id__c, Headers__c, URL__c, CreatedDate FROM Webhook__c WHERE Id =: webhook_id LIMIT 1];
         Map<String, String> header_map = (Map<String, String>)JSON.deserialize(my_webhook.Headers__c, Map<String, String>.class);
 
         HttpRequest req = new HttpRequest();
@@ -40,11 +40,21 @@ public without sharing class WebhookFactory {
         
         String final_payload = JSON.serialize(new WebhookBase(Datetime.valueOf(my_webhook.CreatedDate).format('yyyy-MM-dd\'T\'HH:mm:ss.SSSXXX'), webhook_id));
 
-        req.setBody(final_payload.replaceFirst('"REPLACE_TOKEN"', payload));
-
-
+        if (String.isBlank(my_webhook.Object_Payload_Id__c)){
+            req.setBody(final_payload.replace('"REPLACE_TOKEN"', my_webhook.Payload__c));
+        } else {
+            String query_string = '';
+            Schema.SObjectType token = Id.valueOf(my_webhook.Object_Payload_Id__c).getSObjectType();
+            Schema.DescribeSObjectResult dr = token.getDescribe();
+            for (String field: dr.fields.getMap().keySet())
+                query_string += field + ', ';
+            query_string = query_string.removeEnd(', ');
+            SObject payload = Database.query('SELECT ' + query_string + ' FROM ' + dr.getName() + ' LIMIT 1');
+            req.setBody(final_payload.replace('"REPLACE_TOKEN"', JSON.serialize(payload)));
+        }
+            
         req.setMethod('POST');
-        req.setEndpoint( URL );
+        req.setEndpoint( my_webhook.URL__c );
 
         Http my_http = new Http();
         Webhook__c my_webhook_obj = new Webhook__c();
