@@ -16,7 +16,7 @@ public without sharing class WebhookEventTriggerHandler  extends TriggerHandler 
 
     public override void afterInsert(){
         for (Webhook_Event__e webhook: this.newList){
-            //WebhookFactory.make_callout_from_webhook(webhook.URL__c, webhook.Headers__c, webhook.Payload__c, webhook.Webhook_Id__c);
+            WebhookFactory.make_callout_from_webhook(webhook.Webhook_Id__c);
         }
     }
 }
