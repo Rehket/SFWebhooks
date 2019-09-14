@@ -30,7 +30,6 @@ public without sharing class WebhookFactory {
         
         
         Webhook__c my_webhook = [SELECT Id, Payload__c, Headers__c, URL__c, CreatedDate FROM Webhook__c WHERE Id =: webhook_id LIMIT 1];
-
         Map<String, String> header_map = (Map<String, String>)JSON.deserialize(my_webhook.Headers__c, Map<String, String>.class);
 
         HttpRequest req = new HttpRequest();
