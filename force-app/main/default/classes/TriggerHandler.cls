@@ -24,11 +24,6 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-/*******************************************************************************************************
- * @author Adam Albright, adam.albright@officedepot.com, 15 February 2019
- * @description This class is used as a base class for trigger handlers going forward.
- */
-
 public virtual class TriggerHandler {
     // static map of handlername, times run() was invoked
     private static Set<String> bypassedHandlers;
