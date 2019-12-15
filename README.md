@@ -15,11 +15,12 @@ Some classes to create outbound JSON webhooks.
 3. Figure out the object permissions.
 4. Insert a Webhook__c.
     ```java
-    Account foos = [SELECT Id, Name FROM Account LIMIT 1];
+    Account my_account = [SELECT Id, Name FROM Account LIMIT 1];
     Webhook__c foo = new Webhook__c(
         URL__c = 'https://your_url_here.com',
-        //Headers__c = '{"Content-Type": "application/json"}',
-        Payload__c = JSON.serialize(foos)
+        // Headers__c = '{"Content-Type": "application/json"}', <-- Headers can be optionally specified!
+        Payload__c = JSON.serialize(my_account)
+        // Object_Payload_Id__c = my_account.Id  <-- This will send all fields available to user!
     );
 
     insert foo;
