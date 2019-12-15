@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Only_allow_one_payload</fullName>
+    <active>true</active>
+    <description>Payload__c  and Object_Payload_Id__c  are mutually exclusive.</description>
+    <errorConditionFormula>AND(NOT( ISNULL(Payload__c)) ,NOT(ISNULL(Payload__c)))</errorConditionFormula>
+    <errorMessage>Payload__c  and Object_Payload_Id__c  are mutually exclusive.</errorMessage>
+</ValidationRule>
