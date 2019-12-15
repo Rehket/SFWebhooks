@@ -23,7 +23,7 @@ System.debug(payload);
 // Execute Me Anomymously
 SObject foos = [SELECT Id FROM Case LIMIT 1];
 Webhook__c foo = new Webhook__c(
-    URL__c = 'https://your_url_here.com',
+    URL__c = 'https://7f474dd8.ngrok.io/api/v1/salesforce/webhook',
     Object_Payload_Id__c = foos.Id
 );
 

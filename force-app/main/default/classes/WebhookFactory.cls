@@ -6,7 +6,7 @@ public without sharing class WebhookFactory {
 
         for(Id webhook_id: my_webhook_map.keySet()){
             Webhook__c my_hook = my_webhook_map.get(webhook_id);
-            if (my_hook.Execution_Order__c == 'IMMEDIATE' && (my_hook.Status__c == 'NEW' || my_hook.Status__c == 'RESUBMIT')) {
+            if (my_hook.Status__c == 'NEW' || my_hook.Status__c == 'RESUBMIT') {
                 
                 events_to_publish.add(new Webhook_Event__e(
                     Webhook_Id__c = my_hook.Id
@@ -21,6 +21,7 @@ public without sharing class WebhookFactory {
             List<Database.SaveResult> results = EventBus.publish(events_to_publish);
         }
     }
+
 
     @future(callout=true)
     public static void make_callout_from_webhook(String webhook_id){
@@ -41,7 +42,21 @@ public without sharing class WebhookFactory {
             req.setBody(final_payload.replace('"REPLACE_TOKEN"', my_webhook.Payload__c));
         } else {
             
-            req.setBody(final_payload.replace('"REPLACE_TOKEN"', build_json_object_payload(my_webhook.Object_Payload_Id__c)));
+            String query_string = '';
+            Schema.SObjectType token = Id.valueOf(my_webhook.Object_Payload_Id__c).getSObjectType();
+            Schema.DescribeSObjectResult dr = token.getDescribe();
+            Map<String, Schema.SObjectField> field_map = dr.fields.getMap();
+            for (String field: field_map.keySet())
+                if(field_map.get(field).getDescribe().isAccessible())
+                    query_string += field + ', ';
+            query_string = query_string.removeEnd(', ');
+            query_string = 'SELECT ' + query_string + ' FROM ' + dr.getName() + ' WHERE Id=\'' + my_webhook.Object_Payload_Id__c + '\' LIMIT 1';
+            if(Test.isRunningTest())
+                System.debug(LoggingLevel.INFO, query_string);
+            // Gotta do this to get the fields dropped for null values.
+            SObject sob_payload = Database.query(query_string);
+
+            req.setBody(final_payload.replace('"REPLACE_TOKEN"', JSON.serialize(sob_payload)));
         }
             
         req.setMethod('POST');
@@ -65,29 +80,4 @@ public without sharing class WebhookFactory {
 
         update my_webhook_obj;
     }
-
-
-    // Need to write test
-    static String build_json_object_payload(String object_id){
-
-        String query_string = '';
-        Schema.SObjectType token = Id.valueOf(object_id).getSObjectType();
-        Schema.DescribeSObjectResult dr = token.getDescribe();
-        Map<String, Schema.SObjectField> field_map = dr.fields.getMap();
-        for (String field: field_map.keySet())
-            query_string += field + ', ';
-        query_string = query_string.removeEnd(', ');
-        System.debug(query_string);
-
-        // Gotta do this to get the fields dropped for null values.
-        SObject payload = Database.query('SELECT ' + query_string + ' FROM ' + dr.getName() + ' LIMIT 1');
-        for (String field: field_map.keySet()){
-            if(field_map.get(field).getDescribe().isUpdateable())
-                payload.put( field, (payload.isSet(field)  ? payload.get(field): null) );
-        }
-        
-        return JSON.serialize(payload);
-
-    }
-
 }

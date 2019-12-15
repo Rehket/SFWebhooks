@@ -17,6 +17,7 @@ global without sharing class Webhook_Test {
         }
     }
 
+
     @IsTest
     static void check_in_progress_request(){
         Test.setMock(HttpCalloutMock.class, new MockHttpResponseGenerator());
@@ -33,6 +34,7 @@ global without sharing class Webhook_Test {
 
         System.assertEquals('INPROGRESS', my_completed_request.Status__c);
     }
+
 
     @IsTest
     static void check_after_event(){
@@ -54,6 +56,7 @@ global without sharing class Webhook_Test {
         System.assertEquals(200, my_completed_request.StatusCode__c);
     }
 
+
     @IsTest
     static void check_after_failed(){
         Test.setMock(HttpCalloutMock.class, new MockHttpResponseGenerator());
@@ -73,6 +76,7 @@ global without sharing class Webhook_Test {
         System.assertEquals('FAILED', my_completed_request.Status__c);
         System.assertEquals(500, my_completed_request.StatusCode__c);
     }
+
 
     @IsTest
     static void should_raise_exception(){
@@ -104,4 +108,30 @@ global without sharing class Webhook_Test {
         my_hook.payload = 'e'.rightPad(130877, '0'); // This pads the payload to mare the JSON string the max possible size.
         System.assert(my_hook.isValid(), 'Length is ' + String.valueOf(JSON.serialize(my_hook).length()));
     }
+
+
+    @IsTest
+    static void test_delivery_with_object_id(){
+        Test.setMock(HttpCalloutMock.class, new MockHttpResponseGenerator());
+        Test.startTest(); 
+
+        Webhook__c my_request = new Webhook__c(
+            URL__c = 'https://www.good_response.com',
+            // Headers__c = '{"Content-Type": "application/json"}',
+            Object_Payload_Id__c = UserInfo.getUserId()
+        );
+
+        insert my_request;
+        Test.getEventBus().deliver();
+        WebhookFactory.make_callout_from_webhook(my_request.Id);
+        Test.stopTest();
+
+        Webhook__c my_completed_request = [SELECT Id, Status__c, StatusCode__c FROM Webhook__c WHERE Id =: my_request.Id LIMIT 1];
+
+        System.assertEquals('PROCESSED', my_completed_request.Status__c);
+        System.assertEquals(200, my_completed_request.StatusCode__c);
+    }
+
+
+
 }
