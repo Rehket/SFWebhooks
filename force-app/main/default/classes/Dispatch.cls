@@ -1,7 +1,7 @@
 
 /*********************
-* 
-
+* Dispatch
+* @author Rehket, 15 January 2020
 */
 public with sharing virtual class Dispatch implements Queueable, {
 
@@ -24,7 +24,7 @@ public with sharing virtual class Dispatch implements Queueable, {
         
         SObject dispatch_object = Database.query(dispatch_setting.Dispatch_Query__c + ' ORDER BY ' + dispatch_setting.Order_By_Field_API_Name__c + ' ' + dispatch_setting.Order_Direction__c +  ' LIMIT 1');
 
-        
+
 
 
     }
