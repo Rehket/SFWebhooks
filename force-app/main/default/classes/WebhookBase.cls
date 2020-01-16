@@ -15,6 +15,14 @@ public with sharing class WebhookBase {
         this.payload = 'REPLACE_TOKEN';
     
     }
+    
+    public String WebhookBase(String queued_timestampz) {
+
+        // "2014-02-01T09:28:56.321-10:00"
+        this.queued_timestampz = queued_timestampz; //Datetime.now().format('yyyy-MM-dd\'T\'HH:mm:ss.SSSXXX');
+        this.payload = 'REPLACE_TOKEN';
+    
+    }
 
     public Boolean isValid(){
         String json_payload = JSON.serialize(this);
