@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Dispatch_Query__c</fullName>
+    <description>The query used to select records to dispatch.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>The query used to select records to dispatch.</inlineHelpText>
+    <label>Dispatch Query</label>
+    <length>32768</length>
+    <trackTrending>false</trackTrending>
+    <type>LongTextArea</type>
+    <visibleLines>3</visibleLines>
+</CustomField>

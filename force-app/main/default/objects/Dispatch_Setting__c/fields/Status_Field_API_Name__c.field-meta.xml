@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Status_Field_API_Name__c</fullName>
+    <defaultValue>&quot;Status__c&quot;</defaultValue>
+    <description>The API name of the field used to track the status. Defaults to Status__c</description>
+    <externalId>false</externalId>
+    <inlineHelpText>The API name of the field used to track the status. Defaults to Status__c</inlineHelpText>
+    <label>Status Field API Name</label>
+    <length>255</length>
+    <required>true</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

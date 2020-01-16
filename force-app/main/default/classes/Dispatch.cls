@@ -3,31 +3,43 @@
 * Dispatch
 * @author Rehket, 15 January 2020
 */
-public with sharing virtual class Dispatch implements Queueable, {
+public with sharing virtual class Dispatch implements Queueable {
 
     class DispatchException extends Exception {}
 
     String class_name = String.valueOf(this).split(':')[0];
-    DispatchSetting__mdt dispatch_setting = [
+    Dispatch_Setting__c dispatch_setting = [
         SELECT 
-            Name__c, 
+            Name, 
             Dispatch_Query__c, 
             Remote_URL__c, 
             Headers__c, 
             Order_By_Field_API_Name__c, 
             Order_Direction__c,
             Status_Field_API_Name__c
-        FROM DispatchSetting__mdt
+        FROM Dispatch_Setting__c WHERE Name = :class_name
     ];
+
+
     
     public void execute(QueueableContext context) {
         
-        SObject dispatch_object = Database.query(dispatch_setting.Dispatch_Query__c + ' ORDER BY ' + dispatch_setting.Order_By_Field_API_Name__c + ' ' + dispatch_setting.Order_Direction__c +  ' LIMIT 1');
+        String dispatch_query = this.dispatch_setting.Dispatch_Query__c + ' ORDER BY ' + this.dispatch_setting.Order_By_Field_API_Name__c + ' ' + this.dispatch_setting.Order_Direction__c +  ' LIMIT 1';
+        SObject dispatch_object = Database.query(dispatch_query);
+        if(dispatch_object == null)
+            throw new DispatchException('Retrieving dispatch object failed: ' + dispatch_query);
 
+        // Make Request
 
+        // Send Request
 
+        // On Success Action
+
+        // On Fail Action
 
     }
+
+
 
     private void validate(){
         
