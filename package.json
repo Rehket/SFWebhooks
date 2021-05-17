@@ -1,0 +1,23 @@
+{
+  "name": "webhooks",
+  "version": "1.0.0",
+  "description": "A framework for sending webhooks.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rehket/SFWebhooks.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Rehket/SFWebhooks/issues"
+  },
+  "homepage": "https://github.com/Rehket/SFWebhooks#readme",
+  "devDependencies": {
+    "prettier": "^2.3.0",
+    "prettier-plugin-apex": "^1.9.1"
+  }
+}
